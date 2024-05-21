@@ -1,0 +1,48 @@
+# .NET Core
+*.db
+*.DS_Store
+*.sql
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build directories
+/bin
+/obj
+/out
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+*.user
+*.userosscache
+*.suo
+
+# Logs
+*.log
+*.tlg
+*.ide
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Visual Studio Code
+.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Project files
+project.lock.json
+project.fragment.lock.json
+
+# Azure Functions
+local.settings.json
+/Wakacje4U.Api/bin
+/Wakacje4U.Api/obj
