@@ -1,4 +1,5 @@
 
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 
@@ -16,7 +17,6 @@ public class ReservationController : ControllerBase
     }
 
     [HttpGet("dates/unavailable")]
-    
     public async Task<ReservationSettings> GetUnavailableDates()
     {
        var reservationSettings = new ReservationSettings{
@@ -27,9 +27,37 @@ public class ReservationController : ControllerBase
        return reservationSettings;
     }
 
+    [HttpPost("enquire")]
+    public IActionResult PostEnquire(Enquiry enquire)
+    {
+        return Ok();
+    }
+
+
     public class ReservationSettings{
         public int MinDaysOfStay { get; set; }
 
-        public DateTime[] DatesUnavailable { get; set; }
+        public DateTime[] DatesUnavailable { get; set; } = [];
+    }
+
+    public class Enquiry
+    {
+        [Required]
+        public string FullName { get; set; }
+
+        [EmailAddress]
+        public string Email { get; set; }
+
+        public string Subject { get; set; }
+
+        public string Message { get; set; } = "";
+
+        public DateRange DateRange { get; set; }
+    }
+
+    public class DateRange{
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string Key { get; set; } = "selection";
     }
 }
