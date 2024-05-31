@@ -46,3 +46,5 @@ project.fragment.lock.json
 local.settings.json
 /Wakacje4U.Api/bin
 /Wakacje4U.Api/obj
+
+.fake

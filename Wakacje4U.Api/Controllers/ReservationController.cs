@@ -2,6 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
+using Wakacje4U.Api.Database;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Wakacje4U.Api.Controllers;
 
@@ -19,16 +22,29 @@ public class ReservationController : ControllerBase
     [HttpGet("dates/unavailable")]
     public async Task<ReservationSettings> GetUnavailableDates()
     {
+        using(var dbContext = new WakacjeDbContext()){
+            var reservations = dbContext.Reservations.Include(r => r.Customer).ToList();
+        }
+
+        var datesUnavailable = new List<DateTime>();
+
+        var currentDate = new DateTime(2024,6,22);
+        while(currentDate < new DateTime(2024, 7,8))
+        {
+            datesUnavailable.Add(currentDate);
+            currentDate = currentDate.AddDays(1);
+        }
+
        var reservationSettings = new ReservationSettings{
         MinDaysOfStay = 5,
-        DatesUnavailable = [DateTime.Now.AddDays(1), DateTime.Now.AddDays(2),  DateTime.Now.AddDays(3),  DateTime.Now.AddDays(4)]
+        DatesUnavailable = datesUnavailable.ToArray()
        } ;
 
        return reservationSettings;
     }
 
     [HttpPost("enquire")]
-    public IActionResult PostEnquire(Enquiry enquire)
+    public IActionResult PostEnquire(EnquiryDto enquire)
     {
         return Ok();
     }
@@ -40,7 +56,7 @@ public class ReservationController : ControllerBase
         public DateTime[] DatesUnavailable { get; set; } = [];
     }
 
-    public class Enquiry
+    public class EnquiryDto
     {
         [Required]
         public string FullName { get; set; }
@@ -52,10 +68,10 @@ public class ReservationController : ControllerBase
 
         public string Message { get; set; } = "";
 
-        public DateRange DateRange { get; set; }
+        public DateRangeDto DateRange { get; set; }
     }
 
-    public class DateRange{
+    public class DateRangeDto{
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Key { get; set; } = "selection";
